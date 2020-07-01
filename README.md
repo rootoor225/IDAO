@@ -6,7 +6,7 @@ Ce sera le premier d'une série de tutoriels expliquant les bases de l'apprentis
 L'apprentissage automatique est une approche de l'informatique qui permet aux programmes de générer une sortie prévisible basée sur une entrée donnée sans utiliser de logique explicitement définie.
 Par exemple, en utilisant la programmation basée sur la logique traditionnelle, nous pourrions écrire une fonction qui classe les fruits, qui prend la couleur et les dimensions en entrée et sort le nom du fruit. Quelque chose comme ça:
 
-"""C++
+> **C++**
 string classifyFruit (Color c, Dimensions d) 
 { 
     if (c.similar ({255, 165, 0})) // green 
@@ -31,28 +31,28 @@ string classifyFruit (Color c, Dimensions d)
     
     retourne "Inconnu"; 
 }
-"""
+```
 
 On voit que cette approche pose toutes sortes de problèmes. Notre fonction ne connaît que quatre types de fruits, donc si nous voulons l'étendre pour classer également les clémentines, nous aurions besoin de déclarations supplémentaires les différenciant des oranges. Nous mélangerions également les poires et les pommes en fonction de la forme exacte du fruit et de la définition de notre similar()méthode. Pour créer une fonction qui classerait une large gamme de fruits avec un bon degré de précision, les choses deviendraient très complexes.
 L'apprentissage automatique résout ce problème en représentant la relation entre l'entrée et la sortie sous forme d' état plutôt que par le biais de règles logiques. Cela signifie qu'au lieu de programmer notre classificateur à l'aide d' if / then / elseinstructions, nous pouvons utiliser des given / thenexemples pour exprimer notre intention. Ainsi, le code pour déterminer le comportement de notre fonction pourrait ressembler à ceci:
-"""C++
+```C++
 ml.given ({0, 255, 0, 10, 9, 11}) .then ("Apple"); 
 ml.given ({0, 255, 0, 15, 7, 8}) .then ("Pear"); 
 ml.given ({255, 255, 0, 20, 4, 4}) .then ("Banana"); 
 ml.given ({255, 165, 0, 10, 10, 10}) .then ("Orange");
-"""
+```
 Ici, mlreprésente notre objet d'apprentissage automatique, l'argument de liste pour given()représenter les tuples de couleur et de dimension pour différents types de fruits et l'argument de chaîne pour then()représenter la sortie que nous attendons du classificateur étant donné l'entrée.
 Si la prochaine étape de notre programme ressemblait à quelque chose, x = ml.classify({255, 165, 0, 10, 10, 10})nous nous attendrions à ce que la valeur de xsoit «Orange».
 L'avantage de cette approche est que puisque nous avons découplé l' état de la logique , le processus de spécification des relations entrée / sortie peut être automatisé.
 Quelque chose comme:
 
-"""C++
+```C++
 lignes automatiques = csv.read ();
 pour (auto & r: lignes) 
 { 
     ml.given (r.colour, r.dimension) .then (r.name); 
 }
-"""
+```
 
 Maintenant, nous pouvons ajouter autant de types de fruits que nous le souhaitons, ou donner de nombreux exemples différents du même type de fruits sans modifier notre code! La seule chose que nous devons changer est la taille et le contenu des données d'entrée, dans ce cas à partir d'un fichier CSV .
 Le lecteur averti va maintenant penser: n'avons-nous pas juste créé une grande table de recherche? La réponse est «non», car cela ne classerait que les fruits qui correspondent exactement à la couleur et aux dimensions d'un exemple. Nous voulons plutôt que le système classe les nouveaux fruits qui portent le même nom que l'un de nos exemples mais avec des dimensions ou des couleurs variables. Donc, x = c.classify({245, 145, 0, 11, 9, 10})nous nous attendrions à ce que la sortie soit «Orange», même si la couleur et les dimensions ne correspondent pas exactement aux exemples que nous avons fournis dans nos given / thendéclarations.
@@ -75,14 +75,14 @@ Il existe de nombreuses variétés d'apprentissage automatique. Dans cet article
 Nous avons maintenant une compréhension de base de l'apprentissage automatique, comment l'intégrer dans notre projet C ++? Une bonne bibliothèque pour cela est le Gesture Recognition Toolkit ou GRT. GRT a été développé pour la reconnaissance des gestes en temps réel et convient à une gamme de tâches d'apprentissage automatique. Il est disponible sur Windows, Mac et Linux, sous une licence MIT et peut donc être utilisé dans des projets open source ou fermés. La documentation complète de classe pour GRT peut être trouvée ici .
 GRT se compose d'un certain nombre de classes C ++ qui implémentent chacune un algorithme d'apprentissage automatique spécifique. Presque toutes les classes GRT utilisent la convention suivante:
 
-"""C++
+```C++
 train(...)utilise les données d'entrée (...)pour former un nouveau modèle qui peut ensuite être utilisé pour la classification.
 predict(...)utilise le vecteur d'entrée (...)et un modèle entraîné pour effectuer la classification.
 getPredictedClassLabel() renvoie l'étiquette de classe prédite à partir du vecteur d'entrée
 save(...) enregistre un modèle ou un ensemble de données dans un fichier.
 load(...) charge un modèle ou un jeu de données pré-formé à partir d'un fichier.
 clear() efface un objet ML, supprimant tous les modèles pré-formés
-"""
+```
 
 # Immeuble GRT
 
@@ -90,7 +90,7 @@ Les instructions suivantes sont spécifiques aux plaftorms Mac et Linux, les uti
 Pour construire GRT, CMake est requis. CMake peut être installé à partir de la page du projet . Sur macOS, je recommande d'utiliser Homebrew pour installer CMake.
 Une fois CMake installé, téléchargez GRT depuis le dépôt git:
 
-"""C++
+```C++
 $ git clone https://github.com/jamiebullock/grt
 Ensuite:
 $ cd grt / build 
@@ -106,7 +106,7 @@ TestSample: 1 ClassLabel: 2 PredictedClassLabel: 2
 ...
 TestSample: 29 ClassLabel: 2 PredictedClassLabel: 2
 Précision du test: 93,3333%
-"""
+```
 
 Ceci exécute le code trouvé dans examples/ClassificationModulesExamples/KNNExample/KNNExample.cpp- un classifieur pour les fleurs d'Iris basé sur les données de l' ensemble de données Iris . Pour plus d'explications, voir ici .
 
@@ -114,19 +114,19 @@ Ceci exécute le code trouvé dans examples/ClassificationModulesExamples/KNNExa
 Nous sommes maintenant prêts à construire un simple classificateur de fruits en utilisant GRT!
 Nous devons d'abord créer un nouveau fichier source (appelons-le fruit.cpp) et inclure l'en-tête GRT. Il s'agit du seul en-tête nécessaire pour utiliser la plupart des fonctionnalités de la bibliothèque GRT.
 
-"""C++
+```C++
 #include "GRT.h" en 
 utilisant l'espace de noms GRT;
 typedef std :: vector <double> v_;
 int main (int argc, const char * argv []) 
 { 
 }
-  """
+  ```
   
 Ensuite, nous allons ajouter des données de notre ensemble de données de formation. Aux fins de cet exemple, nous utiliserons les mêmes «données sur les fruits» en haut de cet article. Pour ce faire, nous utilisons la classe GRT ClassificationData pour créer un ensemble de données simple. Au lieu de chaînes, dans l'apprentissage automatique, des étiquettes numériques sont utilisées, nous supposons ici un mappage de: 1 = pomme, 2 = poire, 3 = banane, 4 = orange. Nous ajoutons donc à notre main()fonction:
 
 ### Ensemble de données ClassificationData; 
-"""C++
+```C++
 dataset.setNumDimensions (6);
 // Ajoutez 3 exemples pour chaque élément pour donner à notre classificateur suffisamment de données 
 pour (int i = 0; i <3; ++ i) 
@@ -136,12 +136,12 @@ pour (int i = 0; i <3; ++ i)
     Ensemble de données Pear.addSample (3, v_ {255, 255, 0, 20, 4, 4}); // Banana 
     dataset.addSample (4, v_ {255, 165, 0, 10, 10, 10}); // Orange 
 }
-"""
+```
 
 Dans le code réel, nous ajouterions de nombreux autres exemples de formation afin que notre classificateur puisse bien généraliser à une variété d'entrées. Nous utiliserions également la loadDatasetFromCSVFile()méthode pour charger l'ensemble de données à partir d'un fichier afin que les données puissent être séparées de notre code. La documentation pour cela peut être trouvée ici .
 Ensuite, nous chargeons notre ensemble de données et formons le classificateur. Ici, nous utilisons un KNNclassificateur, qui implémente l' algorithme k-NN , mais tout autre classificateur dans GRT fonctionnerait. Comme exercice, le lecteur est encouragé à essayer d'échanger différents classificateurs différents de GRT à la place de KNN.
 // La classe de classification. Essayez aussi SVM! 
-"""C++
+```C++
 Classificateur KNN;
 // Former notre classificateur 
 classifier.train (jeu de données);        
@@ -196,26 +196,26 @@ int main (int argc, const char * argv [])
     std :: cout << "Autre étiquette:" << otherLabel << std :: endl;
     retourner 0;
 }
-"""
+```
       
 ## Pour compiler le code sur macOS ou Linux, tapez ce qui suit (à partir du même tmprépertoire que nous avons créé au début du tutoriel).
-"""C++
+```C++
 g ++ -std = c ++ 14 fruit.cpp -ofruit -lgrt -L. -I ../../ GRT
-"""
+```
 
 Cela indique au compilateur de se lier libgrt.so dans le répertoire courant, avec les en-têtes ../../GRT, si vous déplacez GRT ailleurs, les arguments -Let -I devront être ajustés.
 
 ## Enfin, nous exécutons notre programme:
 
-"""C++
+```C++
 ./fruit
-"""
+```
 
 Et la sortie devrait être:
-"""
+```
 Étiquette de classe: 1 
 Autre étiquette: 1
-"""
+```
 
 Toutes nos félicitations! Vous venez d'écrire un classificateur à usage général dans 26 lignes de code C ++ 🤩. Si nous chargeions notre ensemble de données à partir d'un fichier CSV, ce serait beaucoup moins.
 J'espère que ce tutoriel a été utile. Restez à l'écoute pour plus à l'avenir!
