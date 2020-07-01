@@ -84,7 +84,7 @@ load(...) charge un modèle ou un jeu de données pré-formé à partir d'un fic
 clear() efface un objet ML, supprimant tous les modèles pré-formés
 ```
 
-# Immeuble GRT
+# Compiler GRT
 
 Les instructions suivantes sont spécifiques aux plaftorms Mac et Linux, les utilisateurs de Windows doivent se référer au guide de construction officiel .
 Pour construire GRT, CMake est requis. CMake peut être installé à partir de la page du projet . Sur macOS, je recommande d'utiliser Homebrew pour installer CMake.
