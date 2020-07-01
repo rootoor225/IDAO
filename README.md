@@ -6,7 +6,7 @@ Ce sera le premier d'une série de tutoriels expliquant les bases de l'apprentis
 L'apprentissage automatique est une approche de l'informatique qui permet aux programmes de générer une sortie prévisible basée sur une entrée donnée sans utiliser de logique explicitement définie.
 Par exemple, en utilisant la programmation basée sur la logique traditionnelle, nous pourrions écrire une fonction qui classe les fruits, qui prend la couleur et les dimensions en entrée et sort le nom du fruit. Quelque chose comme ça:
 
-> **C++**
+```**C++**
 string classifyFruit (Color c, Dimensions d) 
 { 
     if (c.similar ({255, 165, 0})) // green 
